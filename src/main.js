@@ -2,8 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './assets/css/global.less'
-import './plugins/element.js'
+import '@/plugin/vant.js'
+import api from '@/api'
+Vue.prototype.$api = api
+
 Vue.config.productionTip = false
 
 new Vue({

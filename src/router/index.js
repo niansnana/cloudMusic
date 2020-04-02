@@ -1,16 +1,38 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Index from '@/components/Index'
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    component: Index
+    redirect: '/find'
+  },
+  {
+    path: '/home',
+    component: () => import('@/views/home/Home')
+  },
+  {
+    path: '/find',
+    component: () => import('@/views/home/Find')
+  },
+  {
+    path: '/friend',
+    component: () => import('@/views/home/Friend')
+  },
+  {
+    path: '/video', component: () => import('@/views/home/Video')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/Login')
   }
 ]
 
 const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 
