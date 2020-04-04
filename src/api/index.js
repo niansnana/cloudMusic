@@ -5,7 +5,10 @@
  */
 import axios from 'axios'
 import {
-  bannerSwiper
+  bannerCarousel,
+  playList,
+  newSong,
+  newAlbum
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -17,7 +20,16 @@ export default {
   /**
  * 请求发现页面首页轮播图
  */
-  bannerSwiperFn () {
-    return axios.get(bannerSwiper)
+  bannerCarouselFn () {
+    return axios.get(bannerCarousel)
+  },
+  playListFn () {
+    return axios.get(playList)
+  },
+  getNewSongFn () {
+    return axios.get(newSong)
+  },
+  getNewAlbumFn () {
+    return axios.get(newAlbum)
   }
 }

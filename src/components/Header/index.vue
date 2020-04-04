@@ -5,7 +5,7 @@
 -->
 <template>
   <van-row>
-    <van-col span="4">
+    <van-col span="4" class="icon">
       <van-icon name="contact" />
     </van-col>
     <van-col span="16">
@@ -13,7 +13,7 @@
         <van-tab v-for="item in tabData" :key="item.id" :title="item.title" :to="item.path"></van-tab>
       </van-tabs>
     </van-col>
-    <van-col span="4">
+    <van-col span="4" class="icon">
       <van-icon name="search" />
     </van-col>
   </van-row>
@@ -34,3 +34,8 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+.icon
+  text-align center
+  line-height 44px
+</style>

@@ -10,18 +10,18 @@ const routes = [
   },
   {
     path: '/home',
-    component: () => import('@/views/home/Home')
+    component: () => import('@/views/home/Index')
   },
   {
     path: '/find',
-    component: () => import('@/views/home/Find')
+    component: () => import('@/views/find/Index')
   },
   {
     path: '/friend',
-    component: () => import('@/views/home/Friend')
+    component: () => import('@/views/friend/Index')
   },
   {
-    path: '/video', component: () => import('@/views/home/Video')
+    path: '/video', component: () => import('@/views/video/Index')
   },
   {
     path: '/login',
