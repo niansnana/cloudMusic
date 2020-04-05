@@ -1,13 +1,10 @@
 <template>
   <div id="app">
-    <Header />
-    <router-view class="main" />
+    <router-view />
   </div>
 </template>
 <script>
-import Header from '@/components/Header'
 export default {
-  components: { Header },
   created () {
     this.copyRight()
   },
@@ -21,8 +18,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.main
-  padding 15px
-</style>

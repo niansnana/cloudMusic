@@ -9,19 +9,70 @@ const routes = [
     redirect: '/find'
   },
   {
-    path: '/home',
-    component: () => import('@/views/home/Index')
+    path: '/index',
+    component: () => import('@/views/main/Index'),
+    children: [
+      {
+        path: '/home',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/home/Index')
+      },
+      {
+        path: '/find',
+        component: () => import('@/views/find/Index')
+      },
+      {
+        path: '/friend',
+        component: () => import('@/views/friend/Index')
+      },
+      {
+        path: '/video', component: () => import('@/views/video/Index')
+      }
+    ]
   },
   {
-    path: '/find',
-    component: () => import('@/views/find/Index')
+    path: '/songSquare',
+    redirect: '/songSquare/recommend',
+    component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/Index'),
+    children: [
+      {
+        path: '/songSquare/recommend',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Recommend')
+      },
+      {
+        path: '/songSquare/boutique',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Boutique')
+      },
+      {
+        path: '/songSquare/chinese',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Chinese')
+      },
+      {
+        path: '/songSquare/popular',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Popular')
+      },
+      {
+        path: '/songSquare/nostalgia',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Nostalgia')
+      },
+      {
+        path: '/songSquare/ballad',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Ballad')
+      },
+      {
+        path: '/songSquare/occident',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Occident')
+      },
+      {
+        path: '/songSquare/japanese',
+        component: () => import(/* webpackChunkName: "songSquare" */ '@/views/songSquare/components/Japanese')
+      }
+    ]
   },
   {
-    path: '/friend',
-    component: () => import('@/views/friend/Index')
-  },
-  {
-    path: '/video', component: () => import('@/views/video/Index')
+    // 歌单详情
+    path: '/songSquare/detail',
+    name: 'songSquareDetail',
+    component: () => import('@/views/songSquare/Detail')
   },
   {
     path: '/login',

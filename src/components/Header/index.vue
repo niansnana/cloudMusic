@@ -4,19 +4,21 @@
 @Update log：编写共用header组件
 -->
 <template>
-  <van-row>
-    <van-col span="4" class="icon">
-      <van-icon name="contact" />
-    </van-col>
-    <van-col span="16">
-      <van-tabs v-model="active">
-        <van-tab v-for="item in tabData" :key="item.id" :title="item.title" :to="item.path"></van-tab>
-      </van-tabs>
-    </van-col>
-    <van-col span="4" class="icon">
-      <van-icon name="search" />
-    </van-col>
-  </van-row>
+  <van-sticky>
+    <van-row>
+      <van-col span="4" class="icon">
+        <van-icon name="contact" />
+      </van-col>
+      <van-col span="16">
+        <van-tabs v-model="active">
+          <van-tab v-for="item in tabData" :key="item.id" :title="item.title" :to="item.path"></van-tab>
+        </van-tabs>
+      </van-col>
+      <van-col span="4" class="icon">
+        <van-icon name="search" />
+      </van-col>
+    </van-row>
+  </van-sticky>
 </template>
 
 <script>
@@ -35,6 +37,8 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+.van-row
+  background #fff
 .icon
   text-align center
   line-height 44px

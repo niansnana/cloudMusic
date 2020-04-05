@@ -12,10 +12,15 @@
       </van-col>
       <van-col class="square" span="6">更多新碟</van-col>
     </van-row>
-    <div v-show="cur==0">
+    <div class="content" v-show="cur==0">
+      <!-- <van-grid :border="false" column-num="3">
+        <van-grid-item icon="photo-o" text="文字" />
+        <van-grid-item icon="photo-o" text="文字" />
+        <van-grid-item icon="photo-o" text="文字" />
+      </van-grid> -->
       <p>这是新歌部分</p>
     </div>
-    <div v-show="cur==1">
+    <div class="content" v-show="cur==1">
       <p>这是新碟部分</p>
     </div>
   </div>

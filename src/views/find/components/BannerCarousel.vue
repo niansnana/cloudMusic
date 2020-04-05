@@ -5,7 +5,7 @@
  -->
 <template>
   <div class="banner-main">
-    <van-swipe :autoplay="3000">
+    <van-swipe :autoplay="3000" indicator-color="red">
       <van-swipe-item v-for="(item, index) in bannerData" :key="index">
         <img v-lazy="item.pic" class="banner-img" />
       </van-swipe-item>

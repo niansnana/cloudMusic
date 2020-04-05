@@ -21,7 +21,7 @@ export default {
     return {
       navData: [
         { icon: 'clock-o', title: '每日推荐', path: '#' },
-        { icon: 'music-o', title: '歌单', path: '#' },
+        { icon: 'music-o', title: '歌单', path: '/songSquare/recommend' },
         { icon: 'diamond-o', title: '排行榜', path: '#' },
         { icon: 'service-o', title: '电台', path: '#' },
         { icon: 'smile-o', title: '私人FM', path: '#' }

@@ -2,24 +2,26 @@
  * @Author: niansnana
  * @Begin: 2020年4月4日11:12:49
  * @Update log: 编写推荐歌单模块
- * @Bug 图片不是圆角，待解决！
+ * @Bug 图片不是圆角，待解决！(已解决0405)
  -->
 <template>
-  <div>
+  <div class="vanImageToRadius">
     <van-row type="flex" justify="space-between" align="center">
       <van-col class="recommend" span="6">推荐歌单</van-col>
-      <van-col class="square" span="6">歌单广场</van-col>
+      <van-col class="square" span="6">
+        <router-link to="/songSquare">歌单广场</router-link>
+      </van-col>
     </van-row>
     <van-grid :border="false" :column-num="3">
-      <van-grid-item v-for="(item, index) in playListData" :key="index">
+      <van-grid-item v-for="(item, index) in playListData" :key="index" @click="goDetailFn(item)">
         <van-image :src="item.coverImgUrl" lazy-load value-class="coverImgUrl" />
         <p class="description">{{ item.description }}</p>
-        <b class="playCount">
+        <span class="playCount">
           <van-icon name="play-circle-o" />
-          {{ item.playCount }}
-        </b>
+          {{ item.playCount | priceAbb(item.playCount) }}
+        </span>
       </van-grid-item>
-      <van-grid-item>查看更多>></van-grid-item>
+      <!-- <van-grid-item>查看更多>></van-grid-item> -->
     </van-grid>
   </div>
 </template>
@@ -38,6 +40,15 @@ export default {
     getPlatList () {
       this.$api.playListFn().then(res => {
         this.playListData = res.data.playlists
+      })
+    },
+    goDetailFn (item) {
+      // 跳转歌单详情页
+      this.$router.push({
+        name: 'songSquareDetail',
+        params: {
+          id: item.id
+        }
       })
     }
   }
@@ -69,7 +80,8 @@ export default {
     -webkit-line-clamp 2
   .playCount
     position absolute
-    top 20px
-    right 20px
+    top 1.2rem
+    right 1.2rem
+    font-size 0.2rem
     color #fff
 </style>
