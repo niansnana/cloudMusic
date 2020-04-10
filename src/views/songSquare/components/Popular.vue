@@ -45,18 +45,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.van-grid-item
-  font-size 14px
-  color #999
-  position relative
-  .coverImgUrl
-    border-radius 15px
-  .playCount
-    position absolute
-    top 1.2rem
-    right 1.2rem
-    font-size 0.2rem
-    color #fff
-</style>

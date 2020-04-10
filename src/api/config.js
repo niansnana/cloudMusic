@@ -19,3 +19,4 @@ export const newAlbum = api + 'top/album' // 最新碟片
 export const playCatList = api + 'top/playlist' // 获取歌单分类
 export const playhigHqualityList = api + 'top/playlist/highquality' // 获取精品歌单
 export const playlistDetail = api + 'playlist/detail' // 跳转歌单详情页
+export const songUrl = api + 'song/url' // 获取音乐url

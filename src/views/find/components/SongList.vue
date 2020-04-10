@@ -80,8 +80,9 @@ export default {
     -webkit-line-clamp 2
   .playCount
     position absolute
-    top 1.2rem
-    right 1.2rem
-    font-size 0.2rem
+    top 2vh
+    right 2vh
+    z-index 1
+    font-size .9rem
     color #fff
 </style>

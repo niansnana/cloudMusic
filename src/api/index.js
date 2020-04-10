@@ -11,7 +11,8 @@ import {
   newAlbum,
   playCatList,
   playhigHqualityList,
-  playlistDetail
+  playlistDetail,
+  songUrl
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -87,6 +88,14 @@ export default {
     return axios.get(playlistDetail, {
       params: {
         id
+      }
+    })
+  },
+  getSongUrlFn (id, br) {
+    return axios.get(songUrl, {
+      params: {
+        id,
+        br
       }
     })
   }

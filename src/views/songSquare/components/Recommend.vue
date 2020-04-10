@@ -26,6 +26,7 @@
 export default {
   data () {
     return {
+      keywords: '',
       playRecommendData: []
     }
   },
@@ -33,8 +34,8 @@ export default {
     this.getRecommandList()
   },
   methods: {
-    getRecommandList () {
-      this.$api.getPlayCatListFn(30, 'hot', '全部').then(res => {
+    async getRecommandList () {
+      await this.$api.getPlayCatListFn(30, 'hot', '全部').then(res => {
         this.playRecommendData = res.data.playlists
       })
     },
@@ -55,18 +56,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-.van-grid-item
-  font-size 14px
-  color #999
-  position relative
-  .coverImgUrl
-    border-radius 15px
-  .playCount
-    position absolute
-    top 1.2rem
-    right 1.2rem
-    font-size 0.2rem
-    color #fff
-</style>
