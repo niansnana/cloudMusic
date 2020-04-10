@@ -5,19 +5,20 @@
  -->
 <template>
   <div>
+    <!-- 基础信息 -->
     <div class="menu">
       <div class="bg" :style="{ background: 'url(' + listData.coverImgUrl +')' }"></div>
-      <div class="nav">
-        <van-row type="flex" justify="space-around">
+      <van-sticky class="nav">
+        <van-row type="flex" justify="space-around" style="background-color: pink;">
           <van-col span="6" @click="returnFind">
             <van-icon name="arrow-left" />
           </van-col>
           <van-col span="6" align="center">歌单</van-col>
           <van-col span="6" align="right">
-            <van-icon name="bar-chart-o" size="18" />
+            <van-icon name="bar-chart-o" size="18" @click="show = true" />
           </van-col>
         </van-row>
-      </div>
+      </van-sticky>
       <div class="content">
         <van-row type="flex" justify="space-around">
           <van-col class="bgInfo" span="9">
@@ -61,17 +62,72 @@
         </div>
       </div>
     </div>
+    <!-- 歌曲列表 -->
     <div class="list">
+      <van-sticky class="pointSong van-hairline--bottom" :offset-top="45">
+        <van-row type="flex" justify="space-between">
+          <van-col span="6" class="songLeft">
+            <p>
+              <van-icon name="play-circle-o" />播放全部
+              <span>(共{{this.listData.trackCount}}首)</span>
+            </p>
+          </van-col>
+          <van-col span="8" class="songRight" align="right">
+            <p>
+              <van-icon name="plus" />
+              收藏({{this.listData.subscribedCount}})
+            </p>
+          </van-col>
+        </van-row>
+      </van-sticky>
       <van-cell v-for="(item,index) in listInfo" :key="index">
         <template #title>
           <span>{{index+1}}</span>
-          <span class="custom-title van-ellipsis" style="padding: 0 10px;box-sizing: border-box;" @click="playThisAudio(item.id)">{{item.name}}</span>
+          <span
+            class="custom-title van-ellipsis van-hairline--bottom"
+            style="padding: 0 10px;box-sizing: border-box;"
+            @click="playThisAudio(item.id)"
+          >{{item.name}}</span>
         </template>
         <template #right-icon>
           <van-icon name="ellipsis" style="line-height: inherit;" />
         </template>
       </van-cell>
     </div>
+    <!-- 播放页 -->
+    <van-popup v-model="show" position="right">
+      <van-nav-bar
+        class="van-hairline--bottom"
+        :title="audioInfo.name"
+        left-text="返回"
+        left-arrow
+        @click-left="show = false"
+      >
+        <template #right>
+          <van-icon name="filter-o" size="18" />
+        </template>
+      </van-nav-bar>
+      <!-- 播放歌曲啦 -->
+      <div class="showtime">
+        <div class="roundCD">
+          <van-image
+            round
+            width="20em"
+            fit="cover"
+            :src="picUrl !== '' ? picUrl : 'https://img.yzcdn.cn/vant/cat.jpeg'"
+          />
+        </div>
+        <van-grid :border="false">
+          <van-grid-item icon="photo-o" />
+          <van-grid-item icon="photo-o" />
+          <van-grid-item icon="photo-o" />
+          <van-grid-item icon="photo-o" />
+        </van-grid>
+        <audio controls style="width: 100%;" v-for="(item, index) in audioData" :key="index" autoplay>
+          <source :src="item.url" type="audio/mpeg" />
+        </audio>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -82,7 +138,11 @@ export default {
       detailID: '',
       listData: [], // 所有数据
       listInfo: [], // 歌曲数据
-      authorInfo: {} // 作者信息
+      authorInfo: {}, // 作者信息
+      audioData: [], // 歌曲信息
+      audioInfo: {}, // 单个歌曲信息
+      show: false, // 是否显示歌曲详情
+      picUrl: ''
     }
   },
   created () {
@@ -98,6 +158,21 @@ export default {
         this.authorInfo = res.data.playlist.creator
       })
     },
+    playThisAudio (id) {
+      this.show = true
+      this.audioData = [] // 清空上一条数据
+      this.audioInfo = {}
+      this.picUrl = ''
+      this.$api.getSongUrlFn(id).then(res => {
+        for (const item in this.listInfo) {
+          if (this.listInfo[item].id === id) {
+            this.audioInfo = this.listInfo[item]
+            this.picUrl = this.listInfo[item].al.picUrl
+          }
+        }
+        this.audioData = res.data.data
+      })
+    },
     returnFind () {
       this.$router.back(-1)
     }
@@ -111,14 +186,13 @@ export default {
   .bg
     width 100%
     height 100%
-    position absolute
     background-size cover
-    background-repeat no-repeat
+    position absolute
     filter blur(5px)
     z-index -1
   .nav
-    height 5vh
-    line-height 5vh
+    height 45px
+    line-height 45px
     color #fff
   .content
     color #fff
@@ -147,4 +221,24 @@ export default {
             font-size 24px
           span
             display block
+.list
+  .pointSong
+    border 1px solid #fff
+    box-sizing border-box
+    border-radius 15px 15px 0 0
+    color #000
+.van-popup
+  width 100%
+  height 100%
+  .showtime
+    .roundCD
+      width 100%
+      height 100%
+      // height 50vh
+      background rgb(56, 56, 56)
+      border-radius 50%
+      display flex
+      justify-content center
+      align-items center
+      margin 10vh auto
 </style>
