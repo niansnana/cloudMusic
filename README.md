@@ -1,6 +1,4 @@
-# Welcome to cloudMusic😀
-
-## ✌️前言
+## Welcome to cloudMusic😀
 
 出于对学习的热爱[伪]，又因为自身以后发展的需要，随着对Vue的渐次学习，需要真正的做个综合性的小Demo了，来巩固所学知识。由于Github上有大佬提供了很不错的[云音乐开发接口](https://github.com/Binaryify/NeteaseCloudMusicApi)，以及对音乐的喜爱，故开发此项目。
 
@@ -17,18 +15,31 @@ yarn server
 
 ## 👀技术栈
 
-### 👮技术依赖
+#### 前端
 
-- Vue-cli3
-- ES6
-- Stylus
-- EsLint
-- Vant-Ui
-- [云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)
+- `Vue`：用于构建用户界面的 MVVM 框架
+- `vue-router`：为单页面应用提供的路由系统，使用了 `Lazy Loading Routes` 技术来实现异步加载优化性能
+- `vuex`：Vue 集中状态管理，在多个组件共享某些状态时非常便捷
+- `Stylus`：css 预编译处理器
+- `ES6`：ECMAScript 新一代语法，模块化、解构赋值、Promise、Class 等方法非常好用
 
-#### 👤项目演示
+#### 后端
 
-[Preview](http://47.102.197.151:8001) （建议使用主流浏览器）tip:若出现跨域，那是小惊喜:(哭
+- `vue-axios`：用来请求后端 API 音乐数据
+- `NeteaseCloudMusicApi`：网易云音乐 NodeJS 版 API，提供音乐数据
+
+#### 其他工具
+
+- `vue-cli`：Vue 脚手架工具，快速初始化项目代码
+- `eslint`：代码风格检查工具，帮助我们规范代码书写（一定要养成良好的代码规范）
+- `iconfont` ：阿里巴巴图标库（待使用，vant图标太少了。
+
+- `Vant-Ui`：轻量、可靠的移动端Vue组件库
+
+## 👤项目预览
+
+- [Preview](http://47.102.197.151:8001) （建议使用主流浏览器）tip:若出现跨域，那是小惊喜:(哭
+- 截图：待补充
 
 ## ☂️实现功能
 
@@ -54,13 +65,13 @@ yarn server
 
   ...
 
-## 🌸姗姗来迟
+## 🌸TODO
 
 - **版本信息：** 1.0
 - **时间：** 2020年4月11日
 - **更新内容：**
   - 添加bug:(
-- **吐槽**：啊啊啊天啊，又有bug了,好气啊。
+- **吐槽**：还是得听下课，瞎写的太乱了。
 
 ## 作者
 

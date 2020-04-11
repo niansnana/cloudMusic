@@ -6,7 +6,7 @@
 <template>
   <div class="vanImageToRadius">
     <van-grid :border="false" :column-num="3">
-      <van-grid-item v-for="(item, index) in playChineseData" :key="index" @click="goDetailFn(item)">
+      <van-grid-item v-for="(item, index) in listData" :key="index" @click="goDetailFn(item)">
         <van-image :src="item.coverImgUrl" lazy-load value-class="coverImgUrl" />
         <p class="van-multi-ellipsis--l2">{{ item.description }}</p>
         <span class="playCount">
@@ -15,14 +15,17 @@
         </span>
       </van-grid-item>
     </van-grid>
+    <Loading />
   </div>
 </template>
 
 <script>
+import Loading from '@/components/Loading'
 export default {
+  components: { Loading },
   data () {
     return {
-      playChineseData: []
+      listData: []
     }
   },
   created () {
@@ -31,7 +34,7 @@ export default {
   methods: {
     getChineseList () {
       this.$api.getPlayCatListFn(30, 'hot', '华语').then(res => {
-        this.playChineseData = res.data.playlists
+        this.listData = res.data.playlists
       })
     },
     goDetailFn (item) {

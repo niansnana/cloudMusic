@@ -4,5 +4,6 @@
  * @Info state
  */
 export default {
-  count: 0 // 测试
+  playing: false, // 播放状态
+  playlist: [] // 播放歌曲列表
 }

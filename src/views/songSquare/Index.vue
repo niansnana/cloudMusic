@@ -46,6 +46,7 @@ export default {
 
 <style lang="stylus">
 .van-grid-item
+  height 100%
   font-size 14px
   color #999
   position relative
@@ -53,8 +54,8 @@ export default {
     border-radius 15px
   .playCount
     position absolute
-    top 1.2rem
-    right 1.2rem
+    top 2.5vh
+    right 2.5vh
     font-size 0.9rem
     color #fff
 </style>

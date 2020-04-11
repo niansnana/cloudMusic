@@ -67,6 +67,7 @@ export default {
   text-align center
   line-height 20px
 .van-grid-item
+  height 100%
   font-size 14px
   color #999
   position relative

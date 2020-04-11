@@ -9,7 +9,8 @@
     <div class="menu">
       <div class="bg" :style="{ background: 'url(' + listData.coverImgUrl +')' }"></div>
       <van-sticky class="nav">
-        <van-row type="flex" justify="space-around" style="background-color: pink;">
+        <!-- style="background-color: #d44439;" -->
+        <van-row type="flex" justify="space-around" :class="{ 'navActive': scrollFlag }">
           <van-col span="6" @click="returnFind">
             <van-icon name="arrow-left" />
           </van-col>
@@ -68,7 +69,7 @@
     </div>
     <!-- 歌曲列表 -->
     <div class="list">
-      <van-sticky class="pointSong van-hairline--bottom" :offset-top="45">
+      <van-sticky class="pointSong" :offset-top="45">
         <van-row type="flex" justify="space-between">
           <van-col span="6" class="songLeft">
             <p>
@@ -179,11 +180,14 @@
         </audio>
       </div>
     </van-popup>
+    <Loading />
   </div>
 </template>
 
 <script>
+import Loading from '@/components/Loading'
 export default {
+  components: { Loading },
   data () {
     return {
       detailID: '',
@@ -195,12 +199,16 @@ export default {
       show: false, // 是否显示歌曲详情
       picUrl: '',
       value: 0,
-      statue: true
+      statue: true,
+      scrollFlag: false
     }
   },
   created () {
     this.detailID = this.$route.params.id
     this.getDetail()
+  },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll)
   },
   methods: {
     getDetail () {
@@ -232,6 +240,15 @@ export default {
       //   this.$refs.audio.play()
       // })
     },
+    handleScroll () {
+      const _this = this
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      if (scrollTop) {
+        _this.scrollFlag = true
+      } else {
+        _this.scrollFlag = false
+      }
+    },
     returnFind () {
       this.$router.back(-1)
     }
@@ -253,6 +270,8 @@ export default {
     height 45px
     line-height 45px
     color #fff
+  .navActive
+    background rgb(212, 68, 57)
   .content
     color #fff
     padding 15px
@@ -284,7 +303,6 @@ export default {
   .pointSong
     border 1px solid #fff
     box-sizing border-box
-    border-radius 15px 15px 0 0
     color #000
 .van-popup
   width 100%
