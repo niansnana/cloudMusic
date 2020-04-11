@@ -22,12 +22,16 @@
       <div class="content">
         <van-row type="flex" justify="space-around">
           <van-col class="bgInfo" span="9">
-            <van-image fit="cover" :src="listData.coverImgUrl" />
+            <van-image fit="cover" :src="listData.coverImgUrl" height="100%" />
             <span>
               <van-icon name="service-o" />
               {{listData.playCount | priceAbb(listData.playCount)}}
             </span>
-            <van-icon name="info-o" size="20" style="position: absolute;right: 10px;bottom: 12px;" />
+            <van-icon
+              name="info-o"
+              size="20"
+              style="position: absolute;right: 0.5em;bottom: 0.5em;"
+            />
           </van-col>
           <van-col span="13">
             <h3>{{listData.name}}</h3>
@@ -109,21 +113,68 @@
       </van-nav-bar>
       <!-- 播放歌曲啦 -->
       <div class="showtime">
-        <div class="roundCD">
-          <van-image
-            round
-            width="20em"
-            fit="cover"
-            :src="picUrl !== '' ? picUrl : 'https://img.yzcdn.cn/vant/cat.jpeg'"
-          />
+        <div class="outside">
+          <div class="roundCD">
+            <van-image
+              round
+              fit="cover"
+              :src="picUrl !== '' ? picUrl : 'https://img.yzcdn.cn/vant/cat.jpeg'"
+            />
+          </div>
         </div>
-        <van-grid :border="false">
-          <van-grid-item icon="photo-o" />
-          <van-grid-item icon="photo-o" />
-          <van-grid-item icon="photo-o" />
-          <van-grid-item icon="photo-o" />
-        </van-grid>
-        <audio controls style="width: 100%;" v-for="(item, index) in audioData" :key="index" autoplay>
+        <div class="control">
+          <van-grid :border="false">
+            <van-grid-item icon="like-o" />
+            <van-grid-item icon="down" />
+            <van-grid-item icon="comment-o" badge="1w+" />
+            <van-grid-item icon="more-o" />
+          </van-grid>
+          <van-row type="flex" justify="space-around" align="center">
+            <van-col span="2">
+              <span style="color: #949291;font-size: 10px;">00:00</span>
+            </van-col>
+            <van-col span="15">
+              <van-slider
+                v-model="value"
+                active-color="#ee0a24"
+                inactive-color="##949291"
+                bar-height="1px"
+              >
+                <template #button>
+                  <div class="custom-button"></div>
+                </template>
+              </van-slider>
+            </van-col>
+            <van-col span="2">
+              <span style="color: #949291;font-size: 10px;">04:20</span>
+            </van-col>
+          </van-row>
+          <div class="control_change">
+            <van-row type="flex" justify="space-around">
+              <van-col span="2">
+                <van-icon name="exchange" />
+              </van-col>
+              <van-col span="15" style="display: flex;justify-content: space-around;">
+                <van-icon name="arrow-left" />
+                <van-icon name="pause-circle-o" @click="changePlay" />
+                <!-- 暂停：pause-circle-o  -->
+                <van-icon name="arrow" />
+              </van-col>
+              <van-col span="2">
+                <van-icon name="ellipsis" />
+              </van-col>
+            </van-row>
+          </div>
+        </div>
+        <audio
+          controls
+          style="display: none;"
+          v-for="(item, index) in audioData"
+          :key="index"
+          ref="audio"
+          autoplay
+        >
+          <!-- autoplay -->
           <source :src="item.url" type="audio/mpeg" />
         </audio>
       </div>
@@ -142,7 +193,9 @@ export default {
       audioData: [], // 歌曲信息
       audioInfo: {}, // 单个歌曲信息
       show: false, // 是否显示歌曲详情
-      picUrl: ''
+      picUrl: '',
+      value: 0,
+      statue: true
     }
   },
   created () {
@@ -172,6 +225,12 @@ export default {
         }
         this.audioData = res.data.data
       })
+    },
+    changePlay () {
+      console.log('oh,shift hah...')
+      // this.$nextTick(() => {
+      //   this.$refs.audio.play()
+      // })
     },
     returnFind () {
       this.$router.back(-1)
@@ -203,8 +262,8 @@ export default {
       span
         position absolute
         font-size 10px
-        top 5px
-        right 10px
+        top 1em
+        right 1em
     .author
       span
         font-size 14px
@@ -230,15 +289,34 @@ export default {
 .van-popup
   width 100%
   height 100%
+  background #545052
+  .van-nav-bar
+    background #545052
+    color #fff
   .showtime
     .roundCD
-      width 100%
-      height 100%
-      // height 50vh
-      background rgb(56, 56, 56)
+      width 80%
+      background rgb(5, 5, 5)
+      border 15px solid rgb(100, 92, 97)
+      padding 45px
+      box-sizing border-box
       border-radius 50%
       display flex
       justify-content center
       align-items center
-      margin 10vh auto
+      margin 20px auto
+    .van-grid
+      color #b4b2b5
+    .custom-button
+      font-size 10px
+      padding 2px
+      box-sizing border-box
+      border 5px solid #fff
+      text-align center
+      background-color #ee0a24
+      border-radius 50%
+    .control_change
+      font-size 2.5em
+      color #98999b
+      margin 20px 0px
 </style>
