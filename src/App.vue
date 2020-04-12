@@ -1,10 +1,13 @@
 <template>
   <div id="app">
     <router-view />
+    <Player />
   </div>
 </template>
 <script>
+import Player from '@/components/Player'
 export default {
+  components: { Player },
   created () {
     this.copyRight()
   },

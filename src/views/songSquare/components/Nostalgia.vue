@@ -15,7 +15,7 @@
         </span>
       </van-grid-item>
     </van-grid>
-    <Loading />
+    <Loading v-show="!listData.length" class="loading-content" />
   </div>
 </template>
 

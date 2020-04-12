@@ -57,5 +57,5 @@ export default {
     top 2.5vh
     right 2.5vh
     font-size 0.9rem
-    color #fff
+    color #ffffff
 </style>

@@ -75,6 +75,11 @@ const routes = [
     component: () => import('@/views/songSquare/Detail')
   },
   {
+    // 这里查看并设计样式
+    path: '/leaderboard',
+    component: () => import('@/components/Player')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/Login')

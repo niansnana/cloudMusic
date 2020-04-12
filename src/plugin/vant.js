@@ -110,7 +110,9 @@ Vue.use(Icon)
 Vue.use(image)
 Vue.use(ImagePreview)
 Vue.use(Info)
-Vue.use(Lazyload)
+Vue.use(Lazyload, {
+  lazyComponent: true
+})
 Vue.use(List)
 Vue.use(Loading)
 Vue.use(Locale)
