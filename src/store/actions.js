@@ -5,9 +5,10 @@
  */
 import * as types from './mutation-types'
 
-export const selectSong = function ({ commit }, { list, index }) {
+export const selectSong = function ({ commit }, { list, data, index }) {
   commit(types.SET_PLAYLIST, list) // 获取歌单数据
-  commit(types.SET_CURRENT_INDEX, index)
+  commit(types.SET_CURRENT_INDEX, index) // 获取当前下标的歌曲数据
   commit(types.SET_FULL_SCREEN, true) // 歌单详情展开
+  commit(types.SET_SONG_DATA, data) // 获取当前歌曲的id编号
   commit(types.SET_PLAYING_STATE, true) // 歌曲开始播放
 }

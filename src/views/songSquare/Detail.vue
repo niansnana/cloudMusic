@@ -91,7 +91,7 @@
           <span
             class="custom-title van-ellipsis van-hairline--bottom"
             style="padding: 0 10px;box-sizing: border-box;"
-            @click="selected(index)"
+            @click="selected(index, item.id)"
           >{{item.name}}</span>
         </template>
         <template #right-icon>
@@ -118,7 +118,8 @@ export default {
       listData: [], // 所有数据
       listInfo: [], // 歌曲数据
       authorInfo: {}, // 作者信息
-      scrollFlag: false
+      scrollFlag: false,
+      songData: {}
     }
   },
   created () {
@@ -142,10 +143,16 @@ export default {
         this.authorInfo = res.data.playlist.creator
       })
     },
-    selected (index) {
-      this.selectSong({
-        list: this.listInfo,
-        index: index
+    selected (index, id) {
+      this.$api.getSongUrlFn(id).then(res => {
+        for (const song in res.data.data) {
+          this.songData = res.data.data[song]
+        }
+        this.selectSong({
+          list: this.listInfo,
+          data: this.songData,
+          index: index
+        })
       })
     },
     changePlay () {

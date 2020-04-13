@@ -3,7 +3,7 @@
  * @Begin 2020年4月10日18:13:02
  * @Info getters
  */
-export const singer = state => state.singer
+export const songData = state => state.songData
 export const playing = state => state.playing
 export const fullScreen = state => state.fullScreen
 export const playList = state => state.playList

@@ -6,8 +6,8 @@
  */
 import * as types from './mutation-types'
 const mutations = {
-  [types.SET_SINGER] (state, singer) { // state（获取state里的值）， singer（提交的payload参数）
-    state.singer = singer
+  [types.SET_SONG_DATA] (state, data) {
+    state.songData = data
   },
   [types.SET_PLAYING_STATE] (state, flag) {
     state.playing = flag

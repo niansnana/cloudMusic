@@ -4,7 +4,7 @@
  * @Info state
  */
 const state = {
-  singer: {},
+  songData: [],
   playing: false,
   fullScreen: false,
   playList: [],

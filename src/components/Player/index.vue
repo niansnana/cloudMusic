@@ -71,8 +71,7 @@
             <van-icon name="arrow-left" />
           </div>
           <div class="icon center">
-            <van-icon name="play-circle-o" @click="toggle(currentSong.id)" />
-            <!-- pause -->
+            <van-icon :name="this.playing ? 'pause-circle-o' : 'play-circle-o'" @click="toggle" />
           </div>
           <div class="icon right switch">
             <van-icon name="arrow" />
@@ -95,8 +94,7 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      progressValue: 0,
-      songData: {}
+      progressValue: 0
     }
   },
   computed: {
@@ -104,22 +102,22 @@ export default {
       'fullScreen',
       'playList',
       'currentSong',
+      'songData',
       'playing'
     ])
   },
   methods: {
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayState: 'SET_PLAYING_STATE'
     }),
     shrink () {
       this.setFullScreen(false)
     },
-    toggle (id) {
-      this.$api.getSongUrlFn(id).then(res => {
-        for (const item in res.data.data) {
-          this.songData = res.data.data[item]
-        }
-      })
+    toggle () {
+      const audio = this.$refs.audio
+      this.setPlayState(!this.playing)
+      this.playing ? audio.play() : audio.pause()
     },
     show () {
       this.setFullScreen(true)

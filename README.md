@@ -1,4 +1,4 @@
-## Welcome to cloudMusic😀
+# Welcome to cloudMusic😀
 
 出于对学习的热爱[伪]，又因为自身以后发展的需要，随着对Vue的渐次学习，需要真正的做个综合性的小Demo了，来巩固所学知识。由于Github上有大佬提供了很不错的[云音乐开发接口](https://github.com/Binaryify/NeteaseCloudMusicApi)，以及对音乐的喜爱，故开发此项目。
 
