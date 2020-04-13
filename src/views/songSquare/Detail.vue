@@ -89,7 +89,7 @@
         <template #title>
           <span>{{index+1}}</span>
           <span
-            class="custom-title van-ellipsis van-hairline--bottom"
+            class="custom-title van-ellipsis"
             style="padding: 0 10px;box-sizing: border-box;"
             @click="selected(index, item.id)"
           >{{item.name}}</span>

@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     copyRight () {
-      console.log('欢迎使用 clouMusic!\n当前版本：v1.0\n歌曲来源于网易云\nGithub：https://github.com/niansnana/cloudMusic')
+      console.log('欢迎使用 cloudMusic!\n当前版本：v1.0\n歌曲来源于网易云\nGithub：https://github.com/niansnana/cloudMusic')
     }
   }
 }

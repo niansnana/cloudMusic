@@ -26,7 +26,7 @@
       <div class="disc">
         <div class="disk">
           <div class="cd-wrapper">
-            <div class="cd">
+            <div class="cd" :class="isRotate">
               <van-image width="100%" height="100%" round :src="currentSong.al.picUrl" />
             </div>
           </div>
@@ -44,7 +44,7 @@
         <!-- 进度条 -->
         <van-row type="flex" justify="space-around" align="center">
           <van-col span="2" align="right">
-            <span style="color: #f1f1f1;font-size: 10px;">00:00</span>
+            <span style="color: #f1f1f1;font-size: 10px;">{{format(progressValue)}}</span>
           </van-col>
           <van-col span="15">
             <van-slider
@@ -52,6 +52,7 @@
               active-color="#ee0a24"
               inactive-color="##949291"
               bar-height="2px"
+              @percentChange="getNewProgress"
             >
               <template #button>
                 <div class="custom-button"></div>
@@ -59,7 +60,7 @@
             </van-slider>
           </van-col>
           <van-col span="2" align="left">
-            <span style="color: #f1f1f1;font-size: 10px;">04:20</span>
+            <span style="color: #f1f1f1;font-size: 10px;">{{format(duration)}}</span>
           </van-col>
         </van-row>
         <!-- 音乐操作 -->
@@ -67,14 +68,14 @@
           <div class="icon left change">
             <van-icon name="exchange" />
           </div>
-          <div class="icon left switch">
-            <van-icon name="arrow-left" />
+          <div class="icon left switch" :class="isOK">
+            <van-icon name="arrow-left" @click="prev" />
           </div>
-          <div class="icon center">
+          <div class="icon center" :class="isOK">
             <van-icon :name="this.playing ? 'pause-circle-o' : 'play-circle-o'" @click="toggle" />
           </div>
-          <div class="icon right switch">
-            <van-icon name="arrow" />
+          <div class="icon right switch" :class="isOK">
+            <van-icon name="arrow" @click="next" />
           </div>
           <div class="icon right">
             <van-icon name="ellipsis" />
@@ -82,10 +83,33 @@
         </div>
       </div>
     </div>
-    <div class="mini-player">
-      <p @click="show()">show</p>
+    <div class="mini-player" v-show="!fullScreen">
+      <div class="icon" @click="expand">
+        <van-image width="40" :src="currentSong.al.picUrl" round />
+      </div>
+      <div class="text" @click="expand">
+        <h2 class="name" v-html="currentSong.name"></h2>
+        <div class="desc">ss</div>
+      </div>
+      <div class="control">
+        <van-icon :name="this.playing ? 'pause-circle-o' : 'play-circle-o'" @click.stop="toggle" />
+      </div>
+      <div class="control" @click="actionSheet = true">
+        <van-icon name="bars" />
+      </div>
+      <!-- actionSheet -->
+      <van-action-sheet v-model="actionSheet" title="播放" style="height: 40vh;">
+        <div class="content">内容</div>
+      </van-action-sheet>
     </div>
-    <audio :src="songData.url" ref="audio" autoplay></audio>
+    <audio
+      :src="songData.url"
+      ref="audio"
+      autoplay
+      @canplay="read"
+      @error="error"
+      @timeupdate="updateTime"
+    ></audio>
   </div>
 </template>
 
@@ -94,7 +118,10 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      progressValue: 0
+      progressValue: 0,
+      duration: 0,
+      actionSheet: false,
+      songRead: false
     }
   },
   computed: {
@@ -103,24 +130,107 @@ export default {
       'playList',
       'currentSong',
       'songData',
-      'playing'
-    ])
+      'playing',
+      'currentIndex'
+    ]),
+    isRotate () {
+      return this.playing ? 'play' : 'play pause'
+    },
+    isOK () {
+      return this.songRead ? '' : 'disabled'
+    }
+  },
+  watch: {
+    songData () {
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    },
+    playing (newPlaying) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
+      })
+    }
   },
   methods: {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
-      setPlayState: 'SET_PLAYING_STATE'
+      setPlayState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setSongData: 'SET_SONG_DATA'
     }),
     shrink () {
       this.setFullScreen(false)
     },
-    toggle () {
-      const audio = this.$refs.audio
-      this.setPlayState(!this.playing)
-      this.playing ? audio.play() : audio.pause()
-    },
-    show () {
+    expand () {
       this.setFullScreen(true)
+    },
+    toggle () {
+      if (!this.songRead) {
+        return
+      }
+      this.setPlayState(!this.playing)
+    },
+    updateTime (e) {
+      this.progressValue = e.target.currentTime
+      this.duration = this.$refs.audio.duration
+    },
+    prev () {
+      if (!this.songRead) {
+        return
+      }
+      let index = this.currentIndex - 1
+      if (index === -1) {
+        index = this.playList.length - 1
+      }
+      this.setCurrentIndex(index)
+      this.$api.getSongUrlFn(this.currentSong.id).then(res => {
+        for (const item in res.data.data) {
+          this.setSongData(res.data.data[item])
+        }
+      })
+      if (!this.playing) {
+        this.toggle()
+      }
+      this.songRead = false
+    },
+    next () {
+      if (!this.songRead) {
+        return
+      }
+      let index = this.currentIndex + 1
+      if (index === this.playList.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+      this.$api.getSongUrlFn(this.currentSong.id).then(res => {
+        for (const item in res.data.data) {
+          this.setSongData(res.data.data[item])
+        }
+      })
+      if (!this.playing) {
+        this.toggle()
+      }
+      this.songRead = false
+    },
+    read () {
+      this.songRead = true
+    },
+    error () {
+      this.songRead = true
+    },
+    format (interval) {
+      interval = interval | 0
+      const minute = interval / 60 | 0
+      let second = interval % 60
+      if (second < 10) {
+        second = '0' + second
+      }
+      return minute + ':' + second
+    },
+    getNewProgress () {
+      this.progressValue = this.$refs.audio.currentTime
     }
   }
 }
@@ -206,6 +316,10 @@ export default {
           box-sizing border-box
           border 15px solid rgba(255, 255, 255, 0.1)
           border-radius 50%
+        &.play
+          animation rotate 20s linear infinite
+        &.pause
+          animation-play-state paused
   .control
     position absolute
     width 100%
@@ -232,6 +346,8 @@ export default {
         flex 1
         color #f1f1f1
         font-size 40px
+        &.disabled
+          color red
         &.left
           text-align right
         &.right
@@ -243,5 +359,47 @@ export default {
         &.left.change
           font-size 25px
 .mini-player
-  color pink
+  width 100%
+  height 60px
+  display flex
+  align-items center
+  position fixed
+  left 0
+  bottom 0
+  z-index 180
+  background-color rgba(255, 255, 255, 1)
+  .icon
+    flex 0 0 40px
+    width 40px
+    padding 0 10px 0 20px
+  .text
+    display flex
+    flex-direction column
+    justify-content center
+    flex 1
+    overflow hidden
+    h2
+      margin 0
+      line-height 14px
+      text-overflow ellipsis
+      overflow hidden
+      white-space nowrap
+      font-size 14px
+      color #2e3030
+    .desc
+      text-overflow ellipsis
+      overflow hidden
+      white-space nowrap
+      font-size 11px
+      color #2e3030
+  .control
+    flex 0 0 30px
+    width 30px
+    padding 0 10px
+    font-size 30px
+@keyframes rotate
+  0%
+    transform rotate(0)
+  100%
+    transform rotate(360deg)
 </style>
