@@ -71,6 +71,7 @@ export default {
   font-size 14px
   color #999
   position relative
+  overflow hidden
   .coverImgUrl
     border-radius 15px
   .description

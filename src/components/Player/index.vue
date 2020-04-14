@@ -8,7 +8,7 @@
     <div class="normal-player" v-show="fullScreen">
       <div class="background">
         <div class="filter"></div>
-        <img width="100%" height="100%" :src="currentSong.al.picUrl" />
+        <img width="100%" height="100%" :src="getPicUrl" />
       </div>
       <div class="header">
         <div class="back" @click="shrink">
@@ -52,6 +52,7 @@
               active-color="#ee0a24"
               inactive-color="##949291"
               bar-height="2px"
+              :max="duration"
               @percentChange="getNewProgress"
             >
               <template #button>
@@ -68,13 +69,13 @@
           <div class="icon left change">
             <van-icon name="exchange" />
           </div>
-          <div class="icon left switch" :class="isOK">
+          <div class="icon left switch">
             <van-icon name="arrow-left" @click="prev" />
           </div>
-          <div class="icon center" :class="isOK">
+          <div class="icon center">
             <van-icon :name="this.playing ? 'pause-circle-o' : 'play-circle-o'" @click="toggle" />
           </div>
-          <div class="icon right switch" :class="isOK">
+          <div class="icon right switch">
             <van-icon name="arrow" @click="next" />
           </div>
           <div class="icon right">
@@ -85,14 +86,14 @@
     </div>
     <div class="mini-player" v-show="!fullScreen">
       <div class="icon" @click="expand">
-        <van-image width="40" :src="currentSong.al.picUrl" round />
+        <van-image width="40" :class="isRotate" :src="getPicUrl" round />
       </div>
       <div class="text" @click="expand">
         <h2 class="name" v-html="currentSong.name"></h2>
         <div class="desc">ss</div>
       </div>
       <div class="control">
-        <van-icon :name="this.playing ? 'pause-circle-o' : 'play-circle-o'" @click.stop="toggle" />
+        <van-icon :name="isPlaying" @click.stop="toggle" />
       </div>
       <div class="control" @click="actionSheet = true">
         <van-icon name="bars" />
@@ -136,8 +137,11 @@ export default {
     isRotate () {
       return this.playing ? 'play' : 'play pause'
     },
-    isOK () {
-      return this.songRead ? '' : 'disabled'
+    isPlaying () {
+      return this.playing ? 'pause-circle-o' : 'play-circle-o'
+    },
+    getPicUrl () {
+      return this.currentSong.al.picUrl ? this.currentSong.al.picUrl : ''
     }
   },
   watch: {
@@ -145,6 +149,25 @@ export default {
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
+      if (this.$refs.audio.src) {
+        this.setPlayState(false)
+        // this.songShow = true
+        this.$dialog.alert({
+          message: '暂无版权'
+        }).then(() => {
+          let index = this.currentIndex + 1
+          if (index === this.playList.length) {
+            index = 0
+          }
+          this.setPlayState(true)
+          this.setCurrentIndex(index)
+          this.$api.getSongUrlFn(this.currentSong.id).then(res => {
+            for (const item in res.data.data) {
+              this.setSongData(res.data.data[item])
+            }
+          })
+        })
+      }
     },
     playing (newPlaying) {
       const audio = this.$refs.audio
@@ -316,10 +339,10 @@ export default {
           box-sizing border-box
           border 15px solid rgba(255, 255, 255, 0.1)
           border-radius 50%
-        &.play
-          animation rotate 20s linear infinite
-        &.pause
-          animation-play-state paused
+          &.play
+            animation spin 20s linear infinite
+          &.pause
+            animation-play-state paused
   .control
     position absolute
     width 100%
@@ -372,6 +395,11 @@ export default {
     flex 0 0 40px
     width 40px
     padding 0 10px 0 20px
+    .van-image
+      &.play
+        animation spin 20s linear infinite
+      &.pause
+        animation-play-state paused
   .text
     display flex
     flex-direction column
@@ -397,9 +425,9 @@ export default {
     width 30px
     padding 0 10px
     font-size 30px
-@keyframes rotate
+@keyframes spin
   0%
-    transform rotate(0)
+    transform rotate(0deg)
   100%
     transform rotate(360deg)
 </style>
