@@ -9,6 +9,9 @@ import '@/plugin/vant.js'
 import './assets/stylus/resetvant.styl' // 重置Vant样式
 import * as filters from './filters/index'
 
+// 阿里图标
+import '@/assets/iconfont/iconfont.css'
+
 // 数据懒加载
 // 尴尬的事发生了，Vant集成了一个懒加载机制，插件作用就不大了
 Vue.use(VueLazyload, {

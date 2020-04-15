@@ -66,9 +66,6 @@
 import { mapMutations } from 'vuex'
 export default {
   props: ['commentData', 'comments'], // commentData：基本信息，comments：所有的评论
-  created () {
-    console.log(this.comments)
-  },
   methods: {
     ...mapMutations({
       setCommentShow: 'SET_SHOW_COMMENT'

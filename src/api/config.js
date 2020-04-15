@@ -21,3 +21,5 @@ export const playhigHqualityList = api + 'top/playlist/highquality' // 获取精
 export const playlistDetail = api + 'playlist/detail' // 跳转歌单详情页
 export const songUrl = api + 'song/url' // 获取音乐url
 export const songComment = api + 'comment/music' // 获取对应的歌曲评论
+export const userDetail = api + 'user/detail' // 获取用户信息
+export const userLogin = api + 'login/cellphone' // 用户登录验证判断

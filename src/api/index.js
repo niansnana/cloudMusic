@@ -13,7 +13,9 @@ import {
   playhigHqualityList,
   playlistDetail,
   songUrl,
-  songComment
+  songComment,
+  userDetail,
+  userLogin
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -105,13 +107,12 @@ export default {
       }
     })
   },
+  /**
+   * 获取歌曲评论
+   * @param {*} id 歌曲id
+   * @param {*} num 获取评论数
+   */
   getSongComment (id, num) {
-    // return axios.get(songComment, {
-    //   params: {
-    //     id,
-    //     num
-    //   }
-    // })
     return new Promise((resolve, reject) => {
       axios.get(songComment, {
         params: {
@@ -123,6 +124,34 @@ export default {
       }).catch(err => {
         reject(err.data)
       })
+    })
+  },
+  /**
+   * 获取用户详情
+   * @param {*} uid
+   */
+  getUserDetail (uid) {
+    return new Promise((resolve, reject) => {
+      axios.get(userDetail, {
+        params: uid
+      }).then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err.data)
+      })
+    })
+  },
+  /**
+   * 用户手机号登录
+   * @param {*} phone 手机号
+   * @param {*} password 密码
+   */
+  getUserLogin (phone, password) {
+    return axios.get(userLogin, {
+      params: {
+        phone,
+        password
+      }
     })
   }
 }

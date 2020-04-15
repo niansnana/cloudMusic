@@ -27,8 +27,10 @@ import {
   CouponCell,
   CouponList,
   DatetimePicker,
+  Divider,
   Dialog,
   Field,
+  Form,
   Grid,
   GridItem,
   GoodsAction,
@@ -101,8 +103,10 @@ Vue.use(Coupon)
 Vue.use(CouponCell)
 Vue.use(CouponList)
 Vue.use(DatetimePicker)
+Vue.use(Divider)
 Vue.use(Dialog)
 Vue.use(Field)
+Vue.use(Form)
 Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(GoodsAction)
