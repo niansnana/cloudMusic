@@ -20,6 +20,9 @@ const mutations = {
   },
   [types.SET_CURRENT_INDEX] (state, index) {
     state.currentIndex = index
+  },
+  [types.SET_SHOW_COMMENT] (state, flag) {
+    state.isShowComment = flag
   }
 }
 export default mutations

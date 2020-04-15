@@ -8,6 +8,7 @@ const state = {
   playing: false,
   fullScreen: false,
   playList: [],
-  currentIndex: -1
+  currentIndex: -1,
+  isShowComment: false
 }
 export default state

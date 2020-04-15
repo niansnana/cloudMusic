@@ -38,7 +38,7 @@
         <div class="features">
           <van-icon name="like-o" />
           <van-icon name="down" />
-          <van-icon name="comment-o" badge="1w+" />
+          <van-icon name="comment-o" badge="1w+" @click="showComment" />
           <van-icon name="more-o" />
         </div>
         <!-- 进度条 -->
@@ -53,7 +53,7 @@
               inactive-color="##949291"
               bar-height="2px"
               :max="duration"
-              @percentChange="getNewProgress"
+              @change="getNewProgress"
             >
               <template #button>
                 <div class="custom-button"></div>
@@ -90,7 +90,7 @@
       </div>
       <div class="text" @click="expand">
         <h2 class="name" v-html="currentSong.name"></h2>
-        <div class="desc">ss</div>
+        <div class="desc" v-for="(item, index) in currentSong.ar" :key="index" v-html="item.name"></div>
       </div>
       <div class="control">
         <van-icon :name="isPlaying" @click.stop="toggle" />
@@ -103,26 +103,25 @@
         <div class="content">内容</div>
       </van-action-sheet>
     </div>
-    <audio
-      :src="songData.url"
-      ref="audio"
-      autoplay
-      @canplay="read"
-      @error="error"
-      @timeupdate="updateTime"
-    ></audio>
+    <audio :src="songData.url" ref="audio" autoplay @timeupdate="updateTime"></audio>
+    <!-- 评论展示 -->
+    <van-popup v-model="isShowComment" position="bottom" :style="{ height: '100%' }">
+      <Comment v-bind:commentData="this.currentSong" v-bind:comments="this.allCommentData" />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import Comment from '@/components/Comment'
 export default {
+  components: { Comment },
   data () {
     return {
       progressValue: 0,
       duration: 0,
       actionSheet: false,
-      songRead: false
+      allCommentData: {}
     }
   },
   computed: {
@@ -132,7 +131,8 @@ export default {
       'currentSong',
       'songData',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'isShowComment'
     ]),
     isRotate () {
       return this.playing ? 'play' : 'play pause'
@@ -149,23 +149,13 @@ export default {
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
-      if (this.$refs.audio.src) {
+      if (this.songData.url === null) {
         this.setPlayState(false)
-        // this.songShow = true
         this.$dialog.alert({
           message: '暂无版权'
         }).then(() => {
-          let index = this.currentIndex + 1
-          if (index === this.playList.length) {
-            index = 0
-          }
           this.setPlayState(true)
-          this.setCurrentIndex(index)
-          this.$api.getSongUrlFn(this.currentSong.id).then(res => {
-            for (const item in res.data.data) {
-              this.setSongData(res.data.data[item])
-            }
-          })
+          this.next()
         })
       }
     },
@@ -181,7 +171,8 @@ export default {
       setFullScreen: 'SET_FULL_SCREEN',
       setPlayState: 'SET_PLAYING_STATE',
       setCurrentIndex: 'SET_CURRENT_INDEX',
-      setSongData: 'SET_SONG_DATA'
+      setSongData: 'SET_SONG_DATA',
+      setCommentShow: 'SET_SHOW_COMMENT'
     }),
     shrink () {
       this.setFullScreen(false)
@@ -190,19 +181,16 @@ export default {
       this.setFullScreen(true)
     },
     toggle () {
-      if (!this.songRead) {
-        return
-      }
       this.setPlayState(!this.playing)
     },
     updateTime (e) {
       this.progressValue = e.target.currentTime
       this.duration = this.$refs.audio.duration
+      if (this.progressValue >= this.duration) {
+        this.next()
+      }
     },
     prev () {
-      if (!this.songRead) {
-        return
-      }
       let index = this.currentIndex - 1
       if (index === -1) {
         index = this.playList.length - 1
@@ -216,12 +204,8 @@ export default {
       if (!this.playing) {
         this.toggle()
       }
-      this.songRead = false
     },
     next () {
-      if (!this.songRead) {
-        return
-      }
       let index = this.currentIndex + 1
       if (index === this.playList.length) {
         index = 0
@@ -235,13 +219,6 @@ export default {
       if (!this.playing) {
         this.toggle()
       }
-      this.songRead = false
-    },
-    read () {
-      this.songRead = true
-    },
-    error () {
-      this.songRead = true
     },
     format (interval) {
       interval = interval | 0
@@ -253,7 +230,13 @@ export default {
       return minute + ':' + second
     },
     getNewProgress () {
-      this.progressValue = this.$refs.audio.currentTime
+      this.$refs.audio.currentTime = this.progressValue
+    },
+    showComment () {
+      this.setCommentShow(true)
+      this.$api.getSongComment(this.currentSong.id).then(res => {
+        this.allCommentData = res
+      })
     }
   }
 }

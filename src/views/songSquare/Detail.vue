@@ -85,7 +85,7 @@
           </van-col>
         </van-row>
       </van-sticky>
-      <van-cell v-for="(item,index) in listInfo" :key="index">
+      <van-cell v-for="(item,index) in listInfo" :key="index" :class="getSong">
         <template #title>
           <span>{{index+1}}</span>
           <span
@@ -109,7 +109,7 @@
 
 <script>
 import Loading from '@/components/Loading'
-import { mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   components: { Loading },
   data () {
@@ -119,7 +119,16 @@ export default {
       listInfo: [], // 歌曲数据
       authorInfo: {}, // 作者信息
       scrollFlag: false,
-      songData: {}
+      songDatas: {}
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'songData'
+    ]),
+    getSong () {
+      // 不行，过段时间再想想怎么解决吧
+      return this.songData.url === '' ? 'disabled' : ''
     }
   },
   created () {
@@ -146,11 +155,11 @@ export default {
     selected (index, id) {
       this.$api.getSongUrlFn(id).then(res => {
         for (const song in res.data.data) {
-          this.songData = res.data.data[song]
+          this.songDatas = res.data.data[song]
         }
         this.selectSong({
           list: this.listInfo,
-          data: this.songData,
+          data: this.songDatas,
           index: index
         })
       })
@@ -226,4 +235,7 @@ export default {
     box-sizing border-box
     background-color #fff
     color #000
+  .van-cell
+    &.disabled
+      color lightgray
 </style>

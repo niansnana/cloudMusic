@@ -12,7 +12,8 @@ import {
   playCatList,
   playhigHqualityList,
   playlistDetail,
-  songUrl
+  songUrl,
+  songComment
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -91,12 +92,37 @@ export default {
       }
     })
   },
+  /**
+   * 获取歌曲链接
+   * @param {*} id 歌曲ID
+   * @param {*} br 歌曲质量
+   */
   getSongUrlFn (id, br) {
     return axios.get(songUrl, {
       params: {
         id,
         br
       }
+    })
+  },
+  getSongComment (id, num) {
+    // return axios.get(songComment, {
+    //   params: {
+    //     id,
+    //     num
+    //   }
+    // })
+    return new Promise((resolve, reject) => {
+      axios.get(songComment, {
+        params: {
+          id,
+          num
+        }
+      }).then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err.data)
+      })
     })
   }
 }
