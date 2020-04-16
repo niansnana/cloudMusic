@@ -21,5 +21,13 @@ export const playhigHqualityList = api + 'top/playlist/highquality' // 获取精
 export const playlistDetail = api + 'playlist/detail' // 跳转歌单详情页
 export const songUrl = api + 'song/url' // 获取音乐url
 export const songComment = api + 'comment/music' // 获取对应的歌曲评论
+// 我的页面，登录页面
 export const userDetail = api + 'user/detail' // 获取用户信息
-export const userLogin = api + 'login/cellphone' // 用户登录验证判断
+export const userLogin = api + 'login/cellphone' // 用户手机号登录
+export const userLogout = api + 'logout' // 用户退出登录
+export const userPunch = api + 'daily_signin' // 用户签到
+export const userInfo = api + 'user/detail' // 获取用户详细信息
+export const userSubcount = api + 'user/subcount' // 获取用户信息，歌单，收藏，mv，dj数量
+export const userPlaylist = api + 'user/playlist' // 获取用户歌单
+// 云村页面
+export const musicEvent = api + 'event' // 获取动态消息

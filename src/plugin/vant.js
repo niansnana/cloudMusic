@@ -35,7 +35,7 @@ import {
   GridItem,
   GoodsAction,
   Icon,
-  image,
+  Image,
   ImagePreview,
   Info,
   Lazyload,
@@ -60,6 +60,7 @@ import {
   Row,
   Search,
   Sku,
+  Skeleton,
   Slider,
   Step,
   Stepper,
@@ -111,7 +112,7 @@ Vue.use(Grid)
 Vue.use(GridItem)
 Vue.use(GoodsAction)
 Vue.use(Icon)
-Vue.use(image)
+Vue.use(Image)
 Vue.use(ImagePreview)
 Vue.use(Info)
 Vue.use(Lazyload, {
@@ -138,6 +139,7 @@ Vue.use(Rate)
 Vue.use(Row)
 Vue.use(Search)
 Vue.use(Sku)
+Vue.use(Skeleton)
 Vue.use(Slider)
 Vue.use(Step)
 Vue.use(Stepper)

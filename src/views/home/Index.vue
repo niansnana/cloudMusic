@@ -8,11 +8,11 @@
     </van-cell>
     <van-collapse v-model="activeShow">
       <van-collapse-item title="我创建的歌单(1)" name="1">
-        <div class="content">
-          <van-image width="80" fit="cover" src="http://p4.music.126.net/3smJN-AqbiCZBtbS4UVY2Q==/109951163591496844.jpg?param=200y200" />
+        <div class="content" v-for="(item, index) in userPlayListData" :key="index">
+          <van-image width="80" fit="cover" :src="item.coverImgUrl" />
           <div class="info">
-            <h3>我喜欢的音乐</h3>
-            <span>1首</span>
+            <h3>{{item.name}}</h3>
+            <span>{{item.trackCount}}首</span>
           </div>
         </div>
       </van-collapse-item>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -30,7 +31,24 @@ export default {
         { title: '我的电台', icon: 'icon-wodediantai', value: '0' },
         { title: '我的收藏', icon: 'icon-wodeshoucang', value: '0' }
       ],
-      activeShow: ['1']
+      activeShow: ['1'],
+      userPlayListData: []
+    }
+  },
+  created () {
+    this.getUserInfo()
+  },
+  computed: {
+    ...mapGetters([
+      'accountInfo'
+    ])
+  },
+  methods: {
+    getUserInfo () {
+      // 获取用户歌单情况
+      this.$api.getuserPlaylistFn(this.accountInfo.userId).then(res => {
+        this.userPlayListData = res.data.playlist
+      })
     }
   }
 }
@@ -42,8 +60,8 @@ export default {
   margin 0
   .van-cell
     font-size 20px
-    i
-      margin-right 15px
+    .iconfont
+      margin-right 5px
       color #e1505a
       font-size 20px
     .van-cell__value

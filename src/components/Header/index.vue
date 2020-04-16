@@ -30,10 +30,10 @@
             <van-image width="60px" height="60px" fit="cover" round :src="accountInfo.avatarUrl" />
             <div class="nick">
               <p>{{accountInfo.nickname}}</p>
-              <span>Lv.8</span>
+              <span>Lv.{{userInfo.level}}</span>
             </div>
           </div>
-          <div class="user_punch">签到 ></div>
+          <div class="user_punch" @click="punch">签到</div>
         </div>
         <van-grid :border="false">
           <van-grid-item>
@@ -51,6 +51,7 @@
           <van-grid-item icon="edit" text="我的资料" />
         </van-grid>
       </div>
+      <!-- 未登录显示信息 -->
       <div class="noAccount" v-show="!token">
         <p>登录网易云音乐</p>
         <p>手机电脑多端同步，320k高音质无限下载</p>
@@ -85,7 +86,7 @@ export default {
       tabData: [
         { id: '0', title: '我的', path: '/home' },
         { id: '1', title: '发现', path: '/find' },
-        { id: '2', title: '朋友', path: '/friend' },
+        { id: '2', title: '云村', path: '/friend' },
         { id: '3', title: '视频', path: '/video' }
       ],
       featuresData: [
@@ -105,8 +106,12 @@ export default {
         { title: '分享网易云音乐', icon: 'icon-fenxiang', style: 'margin-top: 10px;', value: '' },
         { title: '关于', icon: 'icon-guanyu', style: '', value: '' }
       ],
-      showMe: false
+      showMe: false,
+      userInfo: {}
     }
+  },
+  created () {
+    this.getUserInfo()
   },
   computed: {
     ...mapGetters([
@@ -121,6 +126,17 @@ export default {
     show () {
       this.showMe = true
     },
+    getUserInfo () {
+      // 获取用户信息，主要是获取用户的登记
+      this.$api.getUserInfoFn(this.accountInfo.userId).then(res => {
+        this.userInfo = res.data
+      })
+    },
+    punch () {
+      this.$api.getUserPunchFn(this.accountInfo.userId).then(res => {
+        console.log('签到需要登录，我登录了啊，好吧，我在想想怎么告诉页面我真的登录了。')
+      })
+    },
     login () {
       /**
        * 待解决的bug，登录或者退出登录，小窗播放器依旧存在，待解决
@@ -129,6 +145,7 @@ export default {
       this.$router.push('login')
     },
     logout () {
+      this.$api.getUserLogout()
       window.sessionStorage.clear()
       this.storageAccount({
         token: '',
@@ -176,6 +193,15 @@ export default {
             text-align center
             width 80%
             margin-top 5px
+      .user_punch
+        width 8vh
+        color #d55347
+        border 1px solid #d55347
+        border-radius 15px
+        text-align center
+        box-sizing border-box
+        padding 5px 10px
+        cursor pointer
     .van-grid
       p
         color #a2a2a2

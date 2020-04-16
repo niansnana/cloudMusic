@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -44,6 +44,9 @@ export default {
     ...mapActions([
       'storageAccount'
     ]),
+    ...mapMutations({
+      setUserInfo: 'SET_USER_INFO'
+    }),
     onSubmit () {
       this.$api.getUserLogin(this.phone, this.password).then(res => {
         if (res.status === 200) {

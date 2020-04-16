@@ -15,7 +15,13 @@ import {
   songUrl,
   songComment,
   userDetail,
-  userLogin
+  userLogin,
+  userPunch,
+  userInfo,
+  userSubcount,
+  userPlaylist,
+  musicEvent,
+  userLogout
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -151,6 +157,59 @@ export default {
       params: {
         phone,
         password
+      }
+    })
+  },
+  getUserLogout () {
+    return axios.get(userLogout)
+  },
+  /**
+   * 用户打卡签到
+   * @param {*} type 签到类型 , 默认 0, 其中 0 为安卓端签到 ,1 为 web/PC 签到
+   */
+  getUserPunchFn (type) {
+    return axios.get(userPunch, {
+      params: type
+    })
+  },
+  /**
+   * 用户信息
+   * @param {*} uid 识别id
+   */
+  getUserInfoFn (uid) {
+    return axios.get(userInfo, {
+      params: {
+        uid
+      }
+    })
+  },
+  /**
+   * 获取用户信息 , 歌单，收藏，mv, dj 数量
+   */
+  getUserSubcountFn () {
+    return axios.get(userSubcount)
+  },
+  /**
+   * 获取用户歌单
+   * @param {*} uid 用户识别 uid
+   */
+  getuserPlaylistFn (uid) {
+    return axios.get(userPlaylist, {
+      params: {
+        uid
+      }
+    })
+  },
+  /**
+   * 获取动态消息
+   * @param {*} pagesize 每页数据,默认20
+   * @param {*} lasttime 返回数据的 lasttime ,默认-1,传入上一次返回结果的 lasttime,将会返回下一页的数据
+   */
+  getMusicEventFn (pagesize, lasttime) {
+    return axios.get(musicEvent, {
+      params: {
+        pagesize,
+        lasttime
       }
     })
   }

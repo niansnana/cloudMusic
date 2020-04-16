@@ -81,6 +81,46 @@ yarn server
   - 其他
 - **吐槽**：我真懒，每天都只写一个demo，希望明天能勤快些。
 
+## 项目布局
+
+```vue
+.src
++-- api
+|   +-- config.js // 存储api请求地址
+|   +-- index.js // 调用请求方法
++-- assets
+|   +-- iconfont
+    |   +-- iconfont.css // 阿里图标
+|   +-- stylus
+    |   +-- resetvant.sty // 重置Vant样式
++-- commponents // 公共组件
+    +-- Comment // 歌曲评论列表
+    +-- Header // 公共布局-头部
+    +-- Loading // 加载动画
+    +-- Player // 播放界面组件
++-- filters // 过滤器
+    +-- index.js // 工具函数
++-- plugin // 集成插件中心
+	+-- vant.js // Vant插件按需引入
++-- router // 路由配置
+    +-- index.js
++-- store // vuex 配置使用
+    +-- action // 根级别的 action
+    +-- getter // 根级别的 getter
+    +-- index // 组装模块并导出 store 的地方
+    +-- mutation-types // 根级别的 mutation-types
+    +-- mutation // 根级别的 mutation
+    +-- state // 根级别的 state
++-- views
+	+-- find // 发现页面
+	+-- friend // 朋友页面（云村）
+	+-- home // 用户(我)的界面
+	+-- login // 登录页面
+	+-- main // 主布局
+	+-- songSquare // 歌单广场
+	+-- video // 视频页面（可能之后会替换）
+```
+
 ## 作者
 
 🐤[niansnana](https://niansnana.github.io/vuepress/about/)
