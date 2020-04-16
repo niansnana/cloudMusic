@@ -12,3 +12,5 @@ export const currentSong = (state) => {
   return state.playList[state.currentIndex] || {}
 }
 export const isShowComment = state => state.isShowComment
+export const token = state => state.token
+export const accountInfo = state => state.accountInfo

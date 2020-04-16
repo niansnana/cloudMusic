@@ -9,6 +9,8 @@ const state = {
   fullScreen: false,
   playList: [],
   currentIndex: -1,
-  isShowComment: false
+  isShowComment: false,
+  token: '',
+  accountInfo: {}
 }
 export default state

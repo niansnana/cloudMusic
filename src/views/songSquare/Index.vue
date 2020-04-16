@@ -8,7 +8,7 @@
     <van-sticky>
       <van-nav-bar title="歌单" left-arrow @click-left="returnFind">
         <template #right>
-          <van-icon name="bar-chart-o" size="18" />
+          <van-icon name="bar-chart-o" size="18" @click="setFullScreen(true)" />
         </template>
       </van-nav-bar>
     </van-sticky>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -37,6 +38,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN'
+    }),
     returnFind () {
       this.$router.push('/find')
     }

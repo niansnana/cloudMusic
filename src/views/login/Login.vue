@@ -11,7 +11,7 @@
       </div>
       <van-button type="default" block @click="showLogin = true">手机号登录</van-button>
       <van-button type="default" block>注册</van-button>
-      <p>游客试用</p>
+      <p @click="goIndex">游客试用</p>
     </div>
     <div class="else">
       <van-divider>其他登录方式</van-divider>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -40,20 +41,31 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'storageAccount'
+    ]),
     onSubmit () {
       this.$api.getUserLogin(this.phone, this.password).then(res => {
         if (res.status === 200) {
+          this.storageAccount({
+            token: res.data.token,
+            data: res.data.profile
+          })
           this.$router.push({
             path: '/find'
           })
         }
-        console.log(res)
       }).catch(err => {
         if (err) {
           this.$dialog.alert({
             message: '用户名或密码错误'
           })
         }
+      })
+    },
+    goIndex () {
+      this.$router.push({
+        path: '/find'
       })
     }
   }

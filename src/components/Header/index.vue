@@ -20,18 +20,16 @@
     </van-row>
     <van-popup v-model="showMe" position="left" :style="{ width: '80%', height: '100%' }">
       <!-- 用户基础信息 -->
-      <div class="userInfo">
-        <div class="info">
+      <div class="userInfo" v-show="token">
+        <div
+          class="info"
+          style="background-size: cover;"
+          :style="{ background: 'url(' + accountInfo.backgroundUrl +')' }"
+        >
           <div class="user_name">
-            <van-image
-              width="60px"
-              height="60px"
-              fit="cover"
-              round
-              src="http://p4.music.126.net/SOwDq67uF_1iBI9p9T8A0g==/109951164775523255.jpg?param=200y200"
-            />
+            <van-image width="60px" height="60px" fit="cover" round :src="accountInfo.avatarUrl" />
             <div class="nick">
-              <p>MerIin</p>
+              <p>{{accountInfo.nickname}}</p>
               <span>Lv.8</span>
             </div>
           </div>
@@ -40,18 +38,23 @@
         <van-grid :border="false">
           <van-grid-item>
             <p>动态</p>
-            <span>0</span>
+            <span>{{accountInfo.eventCount}}</span>
           </van-grid-item>
           <van-grid-item>
             <p>关注</p>
-            <span>0</span>
+            <span>{{accountInfo.follows}}</span>
           </van-grid-item>
           <van-grid-item>
             <p>粉丝</p>
-            <span>0</span>
+            <span>{{accountInfo.followeds}}</span>
           </van-grid-item>
           <van-grid-item icon="edit" text="我的资料" />
         </van-grid>
+      </div>
+      <div class="noAccount" v-show="!token">
+        <p>登录网易云音乐</p>
+        <p>手机电脑多端同步，320k高音质无限下载</p>
+        <van-button type="default" @click="login">立即登录</van-button>
       </div>
       <!-- 网易云操作功能 -->
       <div class="features">
@@ -68,12 +71,13 @@
           </template>
         </van-cell>
       </div>
-      <van-button type="default" block style="margin: 10px 0;" to="login">退出登录</van-button>
+      <van-button type="default" block style="margin: 10px 0;" @click="logout" v-show="token">退出登录</van-button>
     </van-popup>
   </van-sticky>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -104,9 +108,33 @@ export default {
       showMe: false
     }
   },
+  computed: {
+    ...mapGetters([
+      'token',
+      'accountInfo'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'storageAccount'
+    ]),
     show () {
       this.showMe = true
+    },
+    login () {
+      /**
+       * 待解决的bug，登录或者退出登录，小窗播放器依旧存在，待解决
+       * 尝试过store关闭，未成功，难受
+       */
+      this.$router.push('login')
+    },
+    logout () {
+      window.sessionStorage.clear()
+      this.storageAccount({
+        token: '',
+        data: {}
+      })
+      this.$router.push('login')
     }
   }
 }
@@ -117,7 +145,7 @@ export default {
 .icon
   text-align center
   line-height 44px
-.van-popup, .info, .user_name, .nick
+.van-popup, .info
   display flex
   background-color #fff
 .van-popup
@@ -131,8 +159,10 @@ export default {
       align-items center
       justify-content space-between
       .user_name
+        display flex
         align-items center
         .nick
+          display flex
           margin 15px
           flex-direction column
           p
@@ -146,10 +176,18 @@ export default {
             text-align center
             width 80%
             margin-top 5px
-  .van-grid
-    p
-      color #a2a2a2
-      margin 0
+    .van-grid
+      p
+        color #a2a2a2
+        margin 0
+  .noAccount
+    background-color #fff
+    text-align center
+    font-size 14px
+    .van-button
+      width 80%
+      border-radius 20px
+      margin-bottom 15px
   .features
     .van-cell
       white-space nowrap

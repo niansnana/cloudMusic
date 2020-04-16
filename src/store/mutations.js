@@ -23,6 +23,12 @@ const mutations = {
   },
   [types.SET_SHOW_COMMENT] (state, flag) {
     state.isShowComment = flag
+  },
+  [types.SET_TOKEN] (state, data) {
+    state.token = data
+  },
+  [types.SET_ACCOUNT_INFO] (state, data) {
+    state.accountInfo = data
   }
 }
 export default mutations

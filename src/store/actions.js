@@ -12,3 +12,7 @@ export const selectSong = function ({ commit }, { list, data, index }) {
   commit(types.SET_SONG_DATA, data) // 获取当前歌曲的id编号
   commit(types.SET_PLAYING_STATE, true) // 歌曲开始播放
 }
+export const storageAccount = function ({ commit }, { token, data }) {
+  commit(types.SET_TOKEN, token)
+  commit(types.SET_ACCOUNT_INFO, data)
+}
