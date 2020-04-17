@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+// import { mapActions, mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -41,28 +41,53 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'storageAccount'
-    ]),
-    ...mapMutations({
-      setUserInfo: 'SET_USER_INFO'
-    }),
+    // ...mapActions([
+    //   'storageAccount'
+    // ]),
+    // ...mapMutations({
+    //   setUserInfo: 'SET_USER_INFO'
+    // }),
     onSubmit () {
       this.$api.getUserLogin(this.phone, this.password).then(res => {
         if (res.status === 200) {
-          this.storageAccount({
-            token: res.data.token,
-            data: res.data.profile
-          })
-          this.$router.push({
-            path: '/find'
-          })
+          // 验证都正确后，存储 token
+          this.$store.commit('SET_TOKEN', res.data.token)
+          sessionStorage.setItem('token', res.data.token)
+          // 保存登录待使用的用户信息
+          this._loginState()
         }
       }).catch(err => {
         if (err) {
           this.$dialog.alert({
             message: '用户名或密码错误'
           })
+        }
+      })
+    },
+    _loginState () {
+      // 重来，啊，来啊！
+      this.$api.getUserLoginStatusFn().then(res => {
+        if (res.data.code === 200) {
+          // 存储登录账号的基本信息
+          const userInfo = res.data.profile
+          // 存储用户信息
+          sessionStorage.setItem('userInfo', res.data.profile)
+          // store 存储uid，方便调用
+          this.$store.commit('SET_ACCOUNT_UID', res.data.profile.userId)
+          // 通过uid获取具体信息
+          const uid = userInfo.userId
+          this._getUserDetail(uid)
+        }
+      })
+    },
+    _getUserDetail (uid) {
+      this.$api.getUserDetail(uid).then(res => {
+        if (res.status === 200) {
+          // store 存储信息
+          this.$store.commit('SET_ACCOUNT_INFO', res.data.profile)
+          this.$store.commit('SET_USER_LEVEL', res.data.level)
+          // 跳转到发现页面
+          this.$router.push({ path: '/find' })
         }
       })
     },

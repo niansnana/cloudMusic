@@ -14,3 +14,5 @@ export const currentSong = (state) => {
 export const isShowComment = state => state.isShowComment
 export const token = state => state.token
 export const accountInfo = state => state.accountInfo
+export const userLevel = state => state.userLevel
+export const accountUid = state => state.accountUid

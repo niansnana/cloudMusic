@@ -11,6 +11,8 @@ const state = {
   currentIndex: -1, // 当前播放下标
   isShowComment: false, // 是否显示歌曲品论
   token: '', // token验证
-  accountInfo: {} // 登录账户信息
+  accountInfo: {}, // 登录账户信息,
+  userLevel: 0, // 用户账户等级,
+  accountUid: '' // 用户UId
 }
 export default state

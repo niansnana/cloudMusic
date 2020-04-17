@@ -29,6 +29,12 @@ const mutations = {
   },
   [types.SET_ACCOUNT_INFO] (state, data) {
     state.accountInfo = data
+  },
+  [types.SET_USER_LEVEL] (state, num) {
+    state.userLevel = num
+  },
+  [types.SET_ACCOUNT_UID] (state, num) {
+    state.accountUid = num
   }
 }
 export default mutations

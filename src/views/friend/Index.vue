@@ -1,38 +1,42 @@
 <template>
   <div class="friend-main">
     <van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
-      <div class="item">
+      <div v-show="token" class="item" v-for="(item, index) in eventData" :key="index">
         <!-- 左侧头像 -->
-        <van-image
-          width="50px"
-          height="50px"
-          round
-          src="https://p3.music.126.net/SOwDq67uF_1iBI9p9T8A0g==/109951164775523255.jpg"
-        />
+        <van-image width="50px" height="50px" round :src="item.user.avatarUrl" />
         <!-- 右侧信息 -->
         <div class="more">
           <div class="persion-info">
             <div class="nickname">
-              <p class="name">name</p>
-              <div class="desc">time</div>
+              <p class="name">{{item.user.nickname}}</p>
+              <div class="desc">{{item.showTime | dateFilter(item.showTime)}}</div>
             </div>
             <van-button type="default">+关注</van-button>
           </div>
-          <div class="word">content</div>
+          <div class="word">暂时不知道怎么很好的获取json数据，故内容为空。</div>
         </div>
       </div>
     </van-pull-refresh>
+    <div v-show="!token" style="padding: 0 10px;">
+      <p>云村欢迎你！该页面需要你的登录</p>
+      <router-link to="/login">立即登录</router-link>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       isLoading: false,
-      eventData: [],
-      eventObj: {}
+      eventData: []
     }
+  },
+  computed: {
+    ...mapGetters([
+      'token'
+    ])
   },
   created () {
     this.getEventListData()
@@ -45,7 +49,6 @@ export default {
     },
     getEventListData () {
       this.$api.getMusicEventFn(30).then(res => {
-        console.log(res)
         this.eventData = res.data.event
       })
     }

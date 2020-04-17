@@ -16,6 +16,7 @@ import {
   songComment,
   userDetail,
   userLogin,
+  userLoginStatus,
   userPunch,
   userInfo,
   userSubcount,
@@ -25,7 +26,7 @@ import {
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
-
+axios.defaults.withCredentials = true
 // post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
@@ -137,14 +138,10 @@ export default {
    * @param {*} uid
    */
   getUserDetail (uid) {
-    return new Promise((resolve, reject) => {
-      axios.get(userDetail, {
-        params: uid
-      }).then(res => {
-        resolve(res.data)
-      }).catch(err => {
-        reject(err.data)
-      })
+    return axios.get(userDetail, {
+      params: {
+        uid
+      }
     })
   },
   /**
@@ -159,6 +156,9 @@ export default {
         password
       }
     })
+  },
+  getUserLoginStatusFn () {
+    return axios.get(userLoginStatus)
   },
   getUserLogout () {
     return axios.get(userLogout)

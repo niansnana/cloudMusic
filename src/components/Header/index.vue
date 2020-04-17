@@ -30,7 +30,7 @@
             <van-image width="60px" height="60px" fit="cover" round :src="accountInfo.avatarUrl" />
             <div class="nick">
               <p>{{accountInfo.nickname}}</p>
-              <span>Lv.{{userInfo.level}}</span>
+              <span>Lv.{{userLevel}}</span>
             </div>
           </div>
           <div class="user_punch" @click="punch">签到</div>
@@ -116,7 +116,8 @@ export default {
   computed: {
     ...mapGetters([
       'token',
-      'accountInfo'
+      'accountInfo',
+      'userLevel'
     ])
   },
   methods: {
