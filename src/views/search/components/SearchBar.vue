@@ -28,6 +28,12 @@
 
 <script>
 export default {
+  // props: {
+  //   keywords: {
+  //     type: String,
+  //     default: ''
+  //   }
+  // },
   data () {
     return {
       keywords: '',
@@ -42,6 +48,11 @@ export default {
         this.suggestData = []
       }
     }
+  },
+  created () {
+    this.$watch('keywords', (val) => {
+      this.$emit('keywords', (val))
+    })
   },
   methods: {
     onSuggest () {

@@ -5,8 +5,8 @@
 -->
 <template>
   <div>
-    <SearchBar />
-    <SearchHot />
+    <SearchBar :keywords="keywords" @keywords="getKeywords" />
+    <SearchHot v-show="!keywords" />
   </div>
 </template>
 
@@ -17,6 +17,16 @@ export default {
   components: {
     SearchBar,
     SearchHot
+  },
+  data () {
+    return {
+      keywords: ''
+    }
+  },
+  methods: {
+    getKeywords (val) {
+      this.keywords = val
+    }
   }
 }
 </script>

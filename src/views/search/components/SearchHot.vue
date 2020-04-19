@@ -120,6 +120,7 @@ export default {
             align-items center
             line-height 0.6rem
             p
+              white-space nowrap
               color #333333
               padding 0
               font-size 15px

@@ -20,7 +20,7 @@
     <van-collapse v-show="!this.token" v-model="activeShow">
       <van-collapse-item title="我创建的歌单(1)" name="1">
         <div class="content">
-          <van-image width="60" fit="cover" src="https://p2.music.126.net/EWC8bPR8WW9KvhaftdmsXQ==/3397490930543093.jpg?param=140y140" />
+          <van-image width="80" fit="cover" src="https://p2.music.126.net/EWC8bPR8WW9KvhaftdmsXQ==/3397490930543093.jpg?param=140y140" />
           <div class="info">
             <h3>我喜欢的音乐</h3>
             <span>0 首</span>

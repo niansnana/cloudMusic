@@ -5,10 +5,10 @@
 -->
 <template>
   <div>
-    <SearchBar />
-    <div class="result">
-      返回结果：{{keywords}}
-      <p>晚上再解决这个bug</p>
+    <SearchBar :keywords="keywords" @keywords="getKeywords" />
+    <div class="result" v-show="!keywords">
+      返回结果：{{id}}
+      <p>晚上再解决这个问题</p>
       <p>快开学了，有点小期待，哈哈</p>
     </div>
   </div>
@@ -22,15 +22,19 @@ export default {
   },
   data () {
     return {
+      id: '',
       keywords: ''
     }
   },
   created () {
-    this.keywords = this.$route.params.id
+    this.id = this.$route.params.id
   },
   methods: {
     onSearch () {
       console.log('sss')
+    },
+    getKeywords (val) {
+      this.keywords = val
     }
   }
 }
