@@ -86,7 +86,12 @@
     </div>
     <div class="mini-player" v-show="!fullScreen">
       <div class="icon" @click="expand">
-        <van-image width="40" :class="isRotate" :src="getPicUrl" round />
+        <van-image
+          width="40"
+          :class="isRotate"
+          :src="this.currentSong ? this.currentSong.al.picUrl : ''"
+          round
+        />
       </div>
       <div class="text" @click="expand">
         <h2 class="name" v-html="currentSong.name"></h2>
@@ -197,8 +202,10 @@ export default {
       }
       this.setCurrentIndex(index)
       this.$api.getSongUrlFn(this.currentSong.id).then(res => {
-        for (const item in res.data.data) {
-          this.setSongData(res.data.data[item])
+        if (res.status === 200) {
+          for (const item in res.data.data) {
+            this.setSongData(res.data.data[item])
+          }
         }
       })
       if (!this.playing) {
@@ -212,8 +219,10 @@ export default {
       }
       this.setCurrentIndex(index)
       this.$api.getSongUrlFn(this.currentSong.id).then(res => {
-        for (const item in res.data.data) {
-          this.setSongData(res.data.data[item])
+        if (res.status === 200) {
+          for (const item in res.data.data) {
+            this.setSongData(res.data.data[item])
+          }
         }
       })
       if (!this.playing) {
@@ -235,7 +244,9 @@ export default {
     showComment () {
       this.setCommentShow(true)
       this.$api.getSongComment(this.currentSong.id).then(res => {
-        this.allCommentData = res
+        if (res.code === 200) {
+          this.allCommentData = res
+        }
       })
     }
   }

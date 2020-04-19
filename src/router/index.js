@@ -83,6 +83,14 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/Login')
+  },
+  {
+    path: '/search',
+    component: () => import('@/views/search/Index')
+  },
+  {
+    path: '/search/:id',
+    component: () => import('@/views/search/Result')
   }
 ]
 

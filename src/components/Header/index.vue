@@ -14,7 +14,7 @@
           <van-tab v-for="item in tabData" :key="item.id" :title="item.title" :to="item.path"></van-tab>
         </van-tabs>
       </van-col>
-      <van-col span="4" class="icon">
+      <van-col span="4" class="icon" @click="goSearch">
         <van-icon name="search" />
       </van-col>
     </van-row>
@@ -33,7 +33,7 @@
               <span>Lv.{{userLevel}}</span>
             </div>
           </div>
-          <div class="user_punch" @click="punch">签到</div>
+          <div :class="isPunch" @click="punch">{{punchPonit ? '已签到' : '签到'}}</div>
         </div>
         <van-grid :border="false">
           <van-grid-item>
@@ -72,7 +72,7 @@
           </template>
         </van-cell>
       </div>
-      <van-button type="default" block style="margin: 10px 0;" @click="logout" v-show="token">退出登录</van-button>
+      <van-button type="default" block style="margin: 10px 0;background: #fff;color: red;" @click="logout" v-show="token">退出登录</van-button>
     </van-popup>
   </van-sticky>
 </template>
@@ -107,7 +107,8 @@ export default {
         { title: '关于', icon: 'icon-guanyu', style: '', value: '' }
       ],
       showMe: false,
-      userInfo: {}
+      userInfo: {},
+      punchPonit: false
     }
   },
   created () {
@@ -118,7 +119,10 @@ export default {
       'token',
       'accountInfo',
       'userLevel'
-    ])
+    ]),
+    isPunch () {
+      return this.punchPonit ? 'user_punch is_Punch' : 'user_punch'
+    }
   },
   methods: {
     ...mapActions([
@@ -127,15 +131,28 @@ export default {
     show () {
       this.showMe = true
     },
+    goSearch () {
+      this.$router.push({
+        path: '/search'
+      })
+    },
     getUserInfo () {
       // 获取用户信息，主要是获取用户的登记
       this.$api.getUserInfoFn(this.accountInfo.userId).then(res => {
-        this.userInfo = res.data
+        if (res.status === 200) {
+          this.userInfo = res.data
+        }
       })
     },
     punch () {
       this.$api.getUserPunchFn(this.accountInfo.userId).then(res => {
-        console.log('签到需要登录，我登录了啊，好吧，我在想想怎么告诉页面我真的登录了。')
+        if (res.status === 200) {
+          this.punchPonit = true
+        } else {
+          this.$dialog.alert({
+            message: '已签到！'
+          })
+        }
       })
     },
     login () {
@@ -195,7 +212,6 @@ export default {
             width 80%
             margin-top 5px
       .user_punch
-        width 8vh
         color #d55347
         border 1px solid #d55347
         border-radius 15px
@@ -203,6 +219,9 @@ export default {
         box-sizing border-box
         padding 5px 10px
         cursor pointer
+        &.is_Punch
+          color #a2a2a2
+          border 1px solid #a2a2a2
     .van-grid
       p
         color #a2a2a2

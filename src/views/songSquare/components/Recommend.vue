@@ -35,7 +35,9 @@ export default {
   methods: {
     async getRecommandList () {
       await this.$api.getPlayCatListFn(30, 'hot', '全部').then(res => {
-        this.listData = res.data.playlists
+        if (res.status === 200) {
+          this.listData = res.data.playlists
+        }
       })
     },
     goDetailFn (item) {

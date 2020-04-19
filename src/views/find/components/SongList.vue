@@ -39,7 +39,9 @@ export default {
   methods: {
     getPlatList () {
       this.$api.playListFn().then(res => {
-        this.playListData = res.data.playlists
+        if (res.status === 200) {
+          this.playListData = res.data.playlists
+        }
       })
     },
     goDetailFn (item) {

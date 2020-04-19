@@ -147,21 +147,25 @@ export default {
     }),
     getDetail () {
       this.$api.getPlaylistDetailFn(this.detailID).then(res => {
-        this.listData = res.data.playlist
-        this.listInfo = res.data.playlist.tracks
-        this.authorInfo = res.data.playlist.creator
+        if (res.status === 200) {
+          this.listData = res.data.playlist
+          this.listInfo = res.data.playlist.tracks
+          this.authorInfo = res.data.playlist.creator
+        }
       })
     },
     selected (index, id) {
       this.$api.getSongUrlFn(id).then(res => {
-        for (const song in res.data.data) {
-          this.songDatas = res.data.data[song]
+        if (res.status === 200) {
+          for (const song in res.data.data) {
+            this.songDatas = res.data.data[song]
+          }
+          this.selectSong({
+            list: this.listInfo,
+            data: this.songDatas,
+            index: index
+          })
         }
-        this.selectSong({
-          list: this.listInfo,
-          data: this.songDatas,
-          index: index
-        })
       })
     },
     changePlay () {

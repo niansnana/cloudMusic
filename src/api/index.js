@@ -22,7 +22,11 @@ import {
   userSubcount,
   userPlaylist,
   musicEvent,
-  userLogout
+  userLogout,
+  search,
+  searchSuggest,
+  searchHot,
+  searchHotDetail
 } from './config'
 // 请求超时时间
 axios.defaults.timeout = 30000
@@ -212,5 +216,43 @@ export default {
         lasttime
       }
     })
+  },
+  /**
+   * 搜索音乐
+   * @param {*} keywords 关键词
+   * @param {*} limit 返回搜索数量
+   */
+  getSearchFn (keywords, limit) {
+    return axios.get(search, {
+      params: {
+        keywords,
+        limit
+      }
+    })
+  },
+  /**
+   * 搜索建议
+   * @param {*} keywords 关键词
+   * @param {*} type 可选参数，如果传 'mobile' 则返回移动端数据
+   */
+  getSearchSuggestFn (keywords, type = 'mobile') {
+    return axios.get(searchSuggest, {
+      params: {
+        keywords,
+        type
+      }
+    })
+  },
+  /**
+   * 热搜列表（简略）
+   */
+  getSearchHotFn () {
+    return axios.get(searchHot)
+  },
+  /**
+   * 热搜列表（详细）
+   */
+  getSearchHotDetailFn () {
+    return axios.get(searchHotDetail)
   }
 }

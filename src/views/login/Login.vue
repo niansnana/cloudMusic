@@ -31,7 +31,7 @@
 </template>
 
 <script>
-// import { mapActions, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -39,6 +39,12 @@ export default {
       phone: '',
       password: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'token',
+      'accountInfo'
+    ])
   },
   methods: {
     // ...mapActions([
@@ -48,21 +54,23 @@ export default {
     //   setUserInfo: 'SET_USER_INFO'
     // }),
     onSubmit () {
-      this.$api.getUserLogin(this.phone, this.password).then(res => {
-        if (res.status === 200) {
-          // 验证都正确后，存储 token
-          this.$store.commit('SET_TOKEN', res.data.token)
-          sessionStorage.setItem('token', res.data.token)
-          // 保存登录待使用的用户信息
-          this._loginState()
-        }
-      }).catch(err => {
-        if (err) {
-          this.$dialog.alert({
-            message: '用户名或密码错误'
-          })
-        }
-      })
+      if (!this.token) {
+        this.$api.getUserLogin(this.phone, this.password).then(res => {
+          if (res.status === 200) {
+            // 验证都正确后，存储 token
+            this.$store.commit('SET_TOKEN', res.data.token)
+            sessionStorage.setItem('token', res.data.token)
+            // 保存登录待使用的用户信息
+            this._loginState()
+          }
+        }).catch(err => {
+          if (err) {
+            this.$dialog.alert({
+              message: '用户名或密码错误'
+            })
+          }
+        })
+      }
     },
     _loginState () {
       // 重来，啊，来啊！
@@ -71,7 +79,7 @@ export default {
           // 存储登录账号的基本信息
           const userInfo = res.data.profile
           // 存储用户信息
-          sessionStorage.setItem('userInfo', res.data.profile)
+          sessionStorage.setItem('userInfo', JSON.stringify(userInfo))
           // store 存储uid，方便调用
           this.$store.commit('SET_ACCOUNT_UID', res.data.profile.userId)
           // 通过uid获取具体信息

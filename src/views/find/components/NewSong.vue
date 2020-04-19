@@ -39,7 +39,7 @@ export default {
   methods: {
     getNewSong () {
       this.$api.getNewSongFn().then(res => {
-        console.log(res)
+        // console.log(res)
       })
     }
   }

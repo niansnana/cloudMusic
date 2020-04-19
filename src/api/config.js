@@ -32,3 +32,8 @@ export const userSubcount = api + 'user/subcount' // 获取用户信息，歌单
 export const userPlaylist = api + 'user/playlist' // 获取用户歌单
 // 云村页面
 export const musicEvent = api + 'event' // 获取动态消息
+// 搜索页面
+export const search = api + 'search' // 搜索
+export const searchSuggest = api + 'search/suggest' // 搜索
+export const searchHot = api + 'search/hot' // 热搜列表(简略)
+export const searchHotDetail = api + 'search/hot/detail' // 热搜列表(详细)

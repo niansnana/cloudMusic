@@ -34,7 +34,9 @@ export default {
   methods: {
     async getBoutiqueList () {
       await this.$api.getPlayhigHqualityListFn().then(res => {
-        this.listData = res.data.playlists
+        if (res.status === 200) {
+          this.listData = res.data.playlists
+        }
       })
     },
     goDetailFn (item) {

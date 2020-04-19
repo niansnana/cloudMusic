@@ -26,7 +26,9 @@ export default {
   methods: {
     getBanner () {
       this.$api.bannerCarouselFn().then(res => {
-        this.bannerData = res.data.banners
+        if (res.status === 200) {
+          this.bannerData = res.data.banners
+        }
       })
     }
   }

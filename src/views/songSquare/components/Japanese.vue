@@ -34,7 +34,9 @@ export default {
   methods: {
     getJapaneseList () {
       this.$api.getPlayCatListFn(30, 'hot', '日语').then(res => {
-        this.listData = res.data.playlists
+        if (res.status === 200) {
+          this.listData = res.data.playlists
+        }
       })
     },
     goDetailFn (item) {

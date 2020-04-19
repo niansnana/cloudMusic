@@ -34,7 +34,9 @@ export default {
   methods: {
     getChineseList () {
       this.$api.getPlayCatListFn(30, 'hot', '华语').then(res => {
-        this.listData = res.data.playlists
+        if (res.status === 200) {
+          this.listData = res.data.playlists
+        }
       })
     },
     goDetailFn (item) {
