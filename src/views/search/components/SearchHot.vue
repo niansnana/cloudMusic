@@ -8,7 +8,7 @@
     <div class="hot">
       <p>热门搜索</p>
       <div class="hot-tag">
-        <span v-for="(hot, index) in searchHot" :key="index">
+        <span v-for="(hot, index) in searchHot" :key="index" @click="onSearch(hot.first)">
           {{hot.first}}
           <small v-show="hot.iconType === 1">热</small>
         </span>
@@ -62,6 +62,16 @@ export default {
           this.searchHotDetail = res.data.data
         }
       })
+    },
+    onSearch (val) {
+      this.$router.push({
+        path: `/search/${val}`
+      })
+      this.$api.getSearchFn(val).then(res => {
+        if (res.status === 200) {
+          this.songsData = res.data.result.songs
+        }
+      })
     }
   }
 }
@@ -90,6 +100,7 @@ export default {
         color #2e3030
         font-size 14px
         border-radius 15px
+        cursor pointer
         small
           color #fff
           background #dc332c
@@ -125,6 +136,7 @@ export default {
               padding 0
               font-size 15px
               margin-right 5px
+              cursor pointer
             span
               font-size 10px
               color #999

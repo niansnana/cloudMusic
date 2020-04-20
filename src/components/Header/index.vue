@@ -72,7 +72,13 @@
           </template>
         </van-cell>
       </div>
-      <van-button type="default" block style="margin: 10px 0;background: #fff;color: red;" @click="logout" v-show="token">退出登录</van-button>
+      <van-button
+        type="default"
+        block
+        style="margin: 10px 0;background: #fff;color: red;"
+        @click="logout"
+        v-show="token"
+      >退出登录</van-button>
     </van-popup>
   </van-sticky>
 </template>
@@ -147,6 +153,7 @@ export default {
     punch () {
       this.$api.getUserPunchFn(this.accountInfo.userId).then(res => {
         if (res.status === 200) {
+          console.log(res)
           this.punchPonit = true
         } else {
           this.$dialog.alert({
@@ -220,8 +227,9 @@ export default {
         padding 5px 10px
         cursor pointer
         &.is_Punch
-          color #a2a2a2
-          border 1px solid #a2a2a2
+          color #999
+          border 1px solid #999
+          background rgba(255, 255, 255, 0.3)
     .van-grid
       p
         color #a2a2a2
