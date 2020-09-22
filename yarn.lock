@@ -1023,10 +1023,10 @@
   dependencies:
     "@vue/cli-shared-utils" "^4.2.3"
 
-"@vue/cli-plugin-vuex@^4.2.0", "@vue/cli-plugin-vuex@^4.2.3":
-  version "4.2.3"
-  resolved "https://registry.npm.taobao.org/@vue/cli-plugin-vuex/download/@vue/cli-plugin-vuex-4.2.3.tgz#aa1d8e824dd82b8718c0c40e3906c34ccd752516"
-  integrity sha1-qh2Ogk3YK4cYwMQOOQbDTM11JRY=
+"@vue/cli-plugin-vuex@^4.2.3", "@vue/cli-plugin-vuex@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@vue/cli-plugin-vuex/-/cli-plugin-vuex-4.5.6.tgz#484687d85369b0dca065c4491bf18efff5e31ecf"
+  integrity sha512-cWxj0jIhhupU+oFl0mc1St3ig9iF5F01XKwAhKEbvvuHR97zHxLd29My/vvcRwojZMy4aY320oJ+0ljoCIbueQ==
 
 "@vue/cli-service@^4.2.0":
   version "4.2.3"
